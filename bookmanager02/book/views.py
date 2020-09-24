@@ -158,3 +158,26 @@ def comparation_book(request):
     people = PeopleInfo.objects.filter(book__readcount__gt=30)
     people
 
+    #查询集QuerySet的两大特性:1.惰性执行,
+    # 2.缓存:使用同一个查询集,第一次使用时会发生数据库的查询,然后Django会把结果缓存下来,
+    #再次使用这个查询集时会使用缓存的数据,减少了数据库的查询次数,增加效率
+
+
+    #限制查询集
+    #获取第1,2项
+    books = BookInfo.objects.all()[0,2]
+    books
+
+    #分页
+    #查询数据
+    books = BookInfo.objects.all()
+    #导入分页类
+    from django.core.paginator import Paginator
+    #创建分页实例
+    paginator=Paginator(books,2)
+    #获取指定页码数据
+    page_books = paginator.page(1)
+    page_books
+    #获取分页数据
+    total_page = paginator.num_pages
+    total_page
