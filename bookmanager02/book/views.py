@@ -100,7 +100,7 @@ from django.shortcuts import render
 
 #两个属性之间的比较
 def comparation_book(request):
-    from book.models import BookInfo
+    from book.models import BookInfo,PeopleInfo
     #F对象
     #查询阅读量大于等于评论量的图书
     from django.db.models import F,Q
@@ -129,3 +129,32 @@ def comparation_book(request):
     BookInfo.objects.all().order_by('readcount')
     #降序
     BookInfo.objects.all().order_by('-readcount')
+
+    #关联查询
+    # 由一对多的访问语法:一对应的模型类对象.多对应的模型类名小写__set
+    #查询书籍为1的所有人物信息
+    book = BookInfo.objects.get(id=1)
+    book.peopleinfo_set.all()
+    #由多对一的访问语句:多对应的模型类对象.多对应的模型类中的关系类属性名
+    #查询人物为1的书籍信息
+    person = PeopleInfo.objects.get(id=1)
+    person.book
+    #person.book_id
+
+    #关联过滤查询
+    #查询图书,要求图书中有人物郭靖
+    book = BookInfo.objects.filter(peopleinfo__name='郭靖')
+    book
+
+    #查询图书,要求图书中的人物描述含有八
+    book = BookInfo.objects.filter(peopleinfo__description__contains='八')
+    book
+
+    #查询书名为天龙八部的所有人物
+    people = PeopleInfo.objects.filter(book__name='天龙八部')
+    people
+
+    #查询图书阅读量大于30的所有人物
+    people = PeopleInfo.objects.filter(book__readcount__gt=30)
+    people
+
