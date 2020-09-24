@@ -12,8 +12,8 @@ class BookInfo(models.Model):
 
 
     class Meta:
-        db_table = 'bookinfo'
-        verbose_name = '人物信息'
+        db_table = 'bookinfo'  #指明数据库表名
+        verbose_name = '人物信息'   #在admin站点中显示的名称
 
 
     def __str__(self):
