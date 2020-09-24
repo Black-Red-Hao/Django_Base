@@ -59,40 +59,58 @@ from django.shortcuts import render
 
 #过滤查询数据
 #过滤条件的表达语法:属性名称__比较运算符=值
-def search_book(request):
-    from book.models import BookInfo
-    #exact:表示判等
-    #查询编号为1的图书
-    BookInfo.objects.filter(id__exact=1)
-    #简写为:
-    BookInfo.objects.filter(id=1)
-    #模糊查询
-    #contains:是否包含
-    #查询书名包含'传'的图书
-    BookInfo.objects.filter(name__contains='传')
-    #startswith,endswith:以指定值开头或结尾
-    #查询书名以'部'结尾的图书
-    BookInfo.objects.filter(name__endswith='部')
-    #空查询
-    #isnull:是否为null
-    #查询书名为空的图书
-    BookInfo.objects.filter(name__isnull=True)
-    #范围查询
-    #in:是否包含在范围内
-    #查询编号为1或3或5的图书
-    BookInfo.objects.filter(id__in=[1,3,5])
-    #比较查询
-    # gt大于(greater then)
-    # gte大于等于(greater then equal)
-    # lt小于(less then)
-    # lte小于等于(less then equal)
-    #查询编号大于3的图书
-    BookInfo.objects.filter(id__gt=3)
-    #查询编号不等于3
-    BookInfo.objects.filter()
-    #日期查询
-    #查询1980年发表的书
-    BookInfo.objects.filter(pub_date__year=1980)
-    #查询1990年1月1日后发表的书
-    BookInfo.objects.filter(pub_date__gt='1990-1-1')
+# def search_book(request):
+#     from book.models import BookInfo
+#     #exact:表示判等
+#     #查询编号为1的图书
+#     BookInfo.objects.filter(id__exact=1)
+#     #简写为:
+#     BookInfo.objects.filter(id=1)
+#     #模糊查询
+#     #contains:是否包含
+#     #查询书名包含'传'的图书
+#     BookInfo.objects.filter(name__contains='传')
+#     #startswith,endswith:以指定值开头或结尾
+#     #查询书名以'部'结尾的图书
+#     BookInfo.objects.filter(name__endswith='部')
+#     #空查询
+#     #isnull:是否为null
+#     #查询书名为空的图书
+#     BookInfo.objects.filter(name__isnull=True)
+#     #范围查询
+#     #in:是否包含在范围内
+#     #查询编号为1或3或5的图书
+#     BookInfo.objects.filter(id__in=[1,3,5])
+#     #比较查询
+#     # gt大于(greater then)
+#     # gte大于等于(greater then equal)
+#     # lt小于(less then)
+#     # lte小于等于(less then equal)
+#     #查询编号大于3的图书
+#     BookInfo.objects.filter(id__gt=3)
+#     #查询编号不等于3
+#     BookInfo.objects.filter(exclude(id=3))
+#     #日期查询
+#     #查询1980年发表的书
+#     BookInfo.objects.filter(pub_date__year=1980)
+#     #查询1990年1月1日后发表的书
+#     BookInfo.objects.filter(pub_date__gt='1990-1-1')
 
+
+
+#两个属性之间的比较
+def comparation_book(request):
+    from book.models import BookInfo
+    #F对象
+    #查询阅读量大于等于评论量的图书
+    from django.db.models import F,Q
+    BookInfo.objects.filter(readcount__gt=F('commentcount'))
+    #查询阅读量大于2倍评论量的书
+    BookInfo.objects.filter(readcount__gt=F('commentcount')*2)
+    #Q对象
+    #查询阅读量大于20,并且编号小于30的书
+    BookInfo.objects.filter(readcount__gt=20,id__lt=3)
+    #查询阅读量大于20或编号小于3的书,只能使用Q对象实现
+    BookInfo.objects.filter(Q(readcount__gt=20)|Q(id__lt=3))
+    #查询编号不等于3的书
+    BookInfo.objects.filter(~Q(id=3))
