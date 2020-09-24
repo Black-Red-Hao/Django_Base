@@ -2,6 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
+
+def index(request):
+
+    return HttpResponse('good good study')
 #添加数据
 # def create_book(request):
 #     from book.models import BookInfo,PeopleInfo
