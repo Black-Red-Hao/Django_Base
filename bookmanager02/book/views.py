@@ -36,11 +36,63 @@ from django.shortcuts import render
 
 
 
-def del_book(request):
-    from book.models import BookInfo,PeopleInfo
-    #方法一:模型类对象.delete
-    # book = BookInfo.objects.get(name='汉语言入门')
-    # book.delete()
+# def del_book(request):
+#     from book.models import BookInfo,PeopleInfo
+#     #方法一:模型类对象.delete
+#     # book = BookInfo.objects.get(name='汉语言入门')
+#     # book.delete()
+#
+#     #方法二:模型类.objects.filter.delete()
+#     BookInfo.objects.filter(name='英语入门').delete()
 
-    #方法二:模型类.objects.filter.delete()
-    BookInfo.objects.filter(name='英语入门').delete()
+
+#基本查询数据
+# def search_book(request):
+#     from book.models import BookInfo
+#     # get查询:查询单一结果,如果结果不存在,抛出模型类.DoseNotExist异常
+#     BookInfo.objects.get(id=1)
+#     #all():查询多个结果
+#     BookInfo.objects.all()
+#     #count()查询结果数量
+#     BookInfo.objects.count()
+
+
+#过滤查询数据
+#过滤条件的表达语法:属性名称__比较运算符=值
+def search_book(request):
+    from book.models import BookInfo
+    #exact:表示判等
+    #查询编号为1的图书
+    BookInfo.objects.filter(id__exact=1)
+    #简写为:
+    BookInfo.objects.filter(id=1)
+    #模糊查询
+    #contains:是否包含
+    #查询书名包含'传'的图书
+    BookInfo.objects.filter(name__contains='传')
+    #startswith,endswith:以指定值开头或结尾
+    #查询书名以'部'结尾的图书
+    BookInfo.objects.filter(name__endswith='部')
+    #空查询
+    #isnull:是否为null
+    #查询书名为空的图书
+    BookInfo.objects.filter(name__isnull=True)
+    #范围查询
+    #in:是否包含在范围内
+    #查询编号为1或3或5的图书
+    BookInfo.objects.filter(id__in=[1,3,5])
+    #比较查询
+    # gt大于(greater then)
+    # gte大于等于(greater then equal)
+    # lt小于(less then)
+    # lte小于等于(less then equal)
+    #查询编号大于3的图书
+    BookInfo.objects.filter(id__gt=3)
+    #查询编号不等于3
+    BookInfo.objects.filter()
+    #日期查询
+    #查询1980年发表的书
+    BookInfo.objects.filter(pub_date__year=1980)
+    #查询1990年1月1日后发表的书
+    BookInfo.objects.filter(pub_date__gt='1990-1-1')
+
