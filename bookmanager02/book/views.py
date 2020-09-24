@@ -114,3 +114,18 @@ def comparation_book(request):
     BookInfo.objects.filter(Q(readcount__gt=20)|Q(id__lt=3))
     #查询编号不等于3的书
     BookInfo.objects.filter(~Q(id=3))
+
+    #使用aggregate()过滤器调用聚合函数
+    #聚合函数包括:avg,count,max,min,sum
+    #查询图书的总阅读量
+    from django.db.models import Sum
+    BookInfo.objects.aggregate(Sum('readcount'))
+    #返回的是一个字典类型{'属性名__聚合类小写':值}
+    #查询图书总数
+    #使用count时一般不使用aggregate()过滤器
+    BookInfo.objects.count()
+    #排序使用order_by()
+    #升序
+    BookInfo.objects.all().order_by('readcount')
+    #降序
+    BookInfo.objects.all().order_by('-readcount')
