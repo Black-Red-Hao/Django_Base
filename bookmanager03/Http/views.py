@@ -140,6 +140,9 @@ from django.shortcuts import render, redirect
 
 ####################get请求和post请求############################
 #路径请求
+
+
+
 def home(request,city_id,home_id):
     print(city_id,home_id)
     return JsonResponse({'city_id':city_id,'home_id':home_id})
@@ -160,15 +163,10 @@ def get(request):
     print(all_name)
     return HttpResponse('get')
 
-#post字符串查询
+#post查询表单
 def post(request):
-    # get方式实现一键一值
-    name = request.POST.get('name')
-    age = request.POST.get('age')
-    print(name, age)
-    # gitlist方式实现一键多值
-    all_name = request.POST.getlist('name')
-    print(all_name)
+    data = request.POST
+    print(data)
     return HttpResponse('post')
 
 #表单查询
@@ -278,3 +276,16 @@ def get_session(request):
     username = request.session.get('user_name')
     content = '{},{}'.format(user_id,username)
     return HttpResponse(content)
+
+#类视图
+#继承自View
+#类视图中的方法是采用Http方法小写来区分不同的请求方式
+from django.views import View
+
+
+class LoginView(View):
+    def get(self,request):
+        return HttpResponse('get方式')
+
+    def post(self,request):
+        return HttpResponse('post方式')

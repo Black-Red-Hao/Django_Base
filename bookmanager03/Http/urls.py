@@ -33,7 +33,7 @@ from django.urls import path, register_converter
 
 #####################################################
 from Http.views import home, get, post, json, shop, method, response, red, set_cookie, get_cookie, set_session, \
-    get_session
+    get_session,LoginView
 
 
 #定义转换器
@@ -59,4 +59,5 @@ urlpatterns = [
     path('get_cookie/',get_cookie),
     path('set_session/',set_session),
     path('get_session/',get_session),
+    path('111.login',LoginView.as_view())
 ]
