@@ -96,7 +96,47 @@ from django.shortcuts import render, redirect
 #     return redirect('http://www.baidu.com')
 
 
+#状态保持
+#设置Cookie,通过HttpResponse中的set_cookie方法来设置
+def set_cookie(request):
+    #1.获取查询字符串数据
+    user=request.GET.get('user')
+    pswd=request.GET.get('pswd')
+    #2.服务器设置cookie信息
+    response = HttpResponse('set_cookie')
+    #HttpResponse.set_cookie(cookie名, value=cookie值, max_age=cookie有效期)
+    response.set_cookie('name',user)
+    #max_age设置秒数,从响应开始计数
+    response.set_cookie('pwd',pswd,max_age=3600)
+    #删除cookie
+    # response.delete_cookie('name')
+    return response
 
+def get_cookie(request):
+    #获取cookie
+    print(request.COOKIES)
+    #request>COOKIES为字典数据
+    name = request.COOKIES.get('name')
+    return HttpResponse(name)
+
+#设置session
+def set_session(request):
+    #1.模拟用户信息
+    user = request.GET.get('user')
+    #2.设置session信息
+    #假如通过模型查询,查到了用户信息
+    user_id=1
+    request.session['user_id']=user_id
+    request.session['username']=user
+    #设置有效期
+    request.session.set_expiry(3600)
+    return HttpResponse('set_session')
+
+def get_session(request):
+    user_id = request.session.get('user_id')
+    user = request.session.get('username')
+    content = '{},{}'.format(user_id,user)
+    return HttpResponse(content)
 
 ####################get请求和post请求############################
 #路径请求
