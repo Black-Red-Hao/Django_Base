@@ -32,7 +32,7 @@ from django.urls import path, register_converter
 # ]
 
 #####################################################
-from Http.views import home, get, post, json, shop, method
+from Http.views import home, get, post, json, shop, method, response, red
 
 
 #定义转换器
@@ -52,4 +52,6 @@ urlpatterns = [
     path('json/',json),
     path('<good_money>/<phone:mobile>/',shop),
     path('method/',method),
+    path('response/',response),
+    path('red/',red),
 ]

@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
 
 # Create your views here.
 # def index(request):
@@ -60,6 +61,39 @@ from django.shortcuts import render
 # def method(request):
 #     print(request.method)
 #     return HttpResponse('method')
+
+#设置响应体
+def response(request):
+    #status设置状态码
+    # response = HttpResponse('response',status=200)
+    # #设置响应头
+    # response['name'] = 'itcast'
+
+
+    info = {
+        'name':'itcast',
+        'address':'shunyi'
+    }
+    friends = [
+        {
+            'name':'xiaoming',
+            'age':15
+        },
+        {
+            'name':'xiaozhang',
+            'age':13
+        }
+    ]
+    #data 返回的响应数据一般是字典类型
+    #JsonResponse可以把字典转换为json
+    #如果给的是非字典类型,需要修改safe,safe=True表示data是字典类型
+    response = JsonResponse(data=info)
+    response = JsonResponse(data=friends,safe=False)
+    return response
+
+#redirect重定向
+def red(request):
+    return redirect('http://www.baidu.com')
 
 ####################get请求和post请求############################
 #路径请求
@@ -123,3 +157,4 @@ def json(request):
 def method(request):
     print(request.method)
     return HttpResponse('method')
+
