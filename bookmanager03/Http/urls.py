@@ -1,6 +1,6 @@
 from django.urls import path
 
-from Http.views import index,shop,phone
+from Http.views import index, shop, phone, post, json, get
 
 # 定义转换器,实现判断电话号码
 from django.urls import register_converter
@@ -22,6 +22,10 @@ urlpatterns = [
     path('index/',index),
     #对goods_id设置转换器,必须为整形
     path('<city_id>/<int:goods_id>/',shop),
-    path('<phone:mobile>/',phone)
+    path('<phone:mobile>/',phone),
+    path('post/',post),
+    path('json/',json),
+    path('get/',get),
+
 
 ]
