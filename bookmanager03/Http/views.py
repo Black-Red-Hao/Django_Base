@@ -118,3 +118,8 @@ def json(request):
     print(request.META)
     print(request.META['SERVER_PORT'])
     return HttpResponse('json')
+
+#查询请求方式
+def method(request):
+    print(request.method)
+    return HttpResponse('method')
