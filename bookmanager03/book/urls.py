@@ -1,7 +1,7 @@
 from django.urls import path
-from book.views import goods,index,post,post_json,\
-    response,res,method,phone,set_cookie,get_cookie,\
-    set_session,get_session
+from book.views import goods, index, post, post_json, \
+    response, res, method, phone, set_cookie, get_cookie, \
+    set_session, get_session, LoginView, OrderView
 
 from django.urls.converters import register_converter
 #1.定义转换器
@@ -30,4 +30,6 @@ urlpatterns = [
     path('get_cookie/',get_cookie),
     path('set_session/',set_session),
     path('get_session/',get_session),
+    path('110.login/',LoginView.as_view()),
+    path('order/',OrderView.as_view())
 ]

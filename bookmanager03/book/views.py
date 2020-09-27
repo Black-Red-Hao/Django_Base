@@ -101,7 +101,7 @@ def set_cookie(request):
 
 def get_cookie(request):
     #获取cookie
-    print(request.COOKIESS)
+    print(request.COOKIES)
     #request.COOKIES是字典数据
     name = request.COOKIES.get('name')
     return HttpResponse(name)
@@ -122,3 +122,32 @@ def get_session(request):
     username = request.session['username']
     content = '{},{}'.format(user_id,username)
     return HttpResponse(content)
+
+#类视图
+from django.views.generic import View
+
+#类视图继承与View
+#类视图中的方法是采用http小写的方式来区分不同的请求方式
+class LoginView(View):
+
+    def get(self,request):
+        return HttpResponse('get方式')
+
+    def post(self,request):
+        return HttpResponse('post方式')
+
+#类视图的多继承
+
+#我的订单\个人中心页面,如果登录用户,可以访问,未登录,跳转到登录页面
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+#LoginRequiredMixin 作用:判断只有登录用户才可以访问页面
+class OrderView(LoginRequiredMixin,View):
+
+    def get(selfs,request):
+        return HttpResponse('Get 我的订单页面,这个页面必须登录')
+
+    def post(self,request):
+        return HttpResponse('POST 我的订单页面,这个页面必须登录')
+
+############中间件###############
